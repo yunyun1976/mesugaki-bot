@@ -120,7 +120,7 @@ class Admin(commands.Cog):
     @app_commands.command(name="check_master", description="マスターユーザーの一覧を表示します")
     async def check_master(self, interaction: discord.Interaction):
         if not interaction.user.guild_permissions.administrator:
-            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの、残念だったね♡", ephemeral=True)
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
             return
 
         masters = master_handler.get_all_masters()
