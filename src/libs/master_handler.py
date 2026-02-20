@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DB_DIR = 'data'
+DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
 DB_NAME = 'masters.db'
 DB_PATH = os.path.join(DB_DIR, DB_NAME)
 

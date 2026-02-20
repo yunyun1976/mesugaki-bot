@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DB_DIR = 'data'
+DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
 
 def init_db(db_name: str):
     """Initializes the database and creates the phrases table if it doesn't exist."""
