@@ -7,6 +7,13 @@ class Messaging(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+    async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.CommandOnCooldown):
+            
+            await interaction.response.send_message(f"{error.retry_after:.2f}秒も待てないの?童貞♡", ephemeral=True)
+        else:
+            raise error
+
     async def _send_random_phrase_helper(self, interaction: discord.Interaction, db_name: str, suffix: str):
         phrase = db_handler.get_random_phrase(db_name)
         if phrase:
@@ -34,11 +41,13 @@ class Messaging(commands.Cog):
 
     @app_commands.command(name="add_batou", description="罵倒の語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
+    @app_commands.checks.cooldown(1, 5.0, key=lambda i: i.user.id)
     async def add_batou(self, interaction: discord.Interaction, phrase: str):
         await self._add_phrase_helper(interaction, phrase, "barizougon.db")
 
     @app_commands.command(name="add_wakarase", description="わからせの語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
+    @app_commands.checks.cooldown(1, 5.0, key=lambda i: i.user.id)
     async def add_wakarase(self, interaction: discord.Interaction, phrase: str):
         await self._add_phrase_helper(interaction, phrase, "abikyoukan.db")
 
