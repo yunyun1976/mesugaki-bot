@@ -3,3 +3,4 @@
 data
 .request.md
 __pycache__
+*.pyc
