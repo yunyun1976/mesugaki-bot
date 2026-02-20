@@ -12,7 +12,7 @@ class Messaging(commands.Cog):
         if phrase:
             await interaction.response.send_message(phrase + suffix)
         else:
-            await interaction.response.send_message("ネタ切れです...", ephemeral=True)
+            await interaction.response.send_message("データベーススカスカ♡", ephemeral=True)
 
     @app_commands.command(name="batou", description="罵倒します")
     async def batou(self, interaction: discord.Interaction):
@@ -23,14 +23,14 @@ class Messaging(commands.Cog):
         await self._send_random_phrase_helper(interaction, "abikyoukan.db", "ぉぉぉお♡♡♡")
 
     async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, db_name: str):
-        if len(phrase) > 50:
-            await interaction.response.send_message("フレーズは50文字以内で入力してください。", ephemeral=True)
+        if len(phrase) > 100:
+            await interaction.response.send_message("フレーズは100文字以内で入力してくださ～い♡", ephemeral=True)
             return
 
         if db_handler.add_phrase(db_name, phrase):
-            await interaction.response.send_message(f"「{phrase}」を追加しました")
+            await interaction.response.send_message(f"「{phrase}」を登録しました～♡")
         else:
-            await interaction.response.send_message(f"「{phrase}」は既に存在します", ephemeral=True)
+            await interaction.response.send_message(f"「{phrase}」は既に存在しま～す♡ザッコ♡", ephemeral=True)
 
     @app_commands.command(name="add_batou", description="罵倒の語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
