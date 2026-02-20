@@ -109,7 +109,7 @@ class Admin(commands.Cog):
     @app_commands.describe(user="追加するユーザー")
     async def add_master(self, interaction: discord.Interaction, user: discord.User):
         if not interaction.user.guild_permissions.administrator:
-            await interaction.response.send_message("管理者さんだけが使えるんだよ〜♡ キミは使えないの、残念だったね♡", ephemeral=True)
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
             return
 
         if master_handler.add_master(user.id):
@@ -120,7 +120,7 @@ class Admin(commands.Cog):
     @app_commands.command(name="check_master", description="マスターユーザーの一覧を表示します")
     async def check_master(self, interaction: discord.Interaction):
         if not interaction.user.guild_permissions.administrator:
-            await interaction.response.send_message("管理者さんだけが使えるんだよ〜♡ キミは使えないの、残念だったね♡", ephemeral=True)
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの、残念だったね♡", ephemeral=True)
             return
 
         masters = master_handler.get_all_masters()
@@ -138,11 +138,11 @@ class Admin(commands.Cog):
     @app_commands.describe(user="削除するユーザー")
     async def remove_master(self, interaction: discord.Interaction, user: discord.User):
         if not interaction.user.guild_permissions.administrator:
-            await interaction.response.send_message("管理者さんだけが使えるんだよ〜♡ キミは使えないの、残念だったね♡", ephemeral=True)
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
             return
 
         if master_handler.remove_master(user.id):
-            await interaction.response.send_message(f"{user.mention} をマスターユーザーから外してあげたよ♡ これでキミもただのザコだね♡", ephemeral=True)
+            await interaction.response.send_message(f"{user.mention} をマスターユーザーから外してあげたよ♡ これで{user.mention}もただのザコだね♡", ephemeral=True)
         else:
             await interaction.response.send_message(f"{user.mention} はもともとマスターユーザーじゃないみたいだよ♡ キミの勘違いじゃない？♡", ephemeral=True)
 

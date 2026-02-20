@@ -10,7 +10,7 @@ class Messaging(commands.Cog):
     async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, app_commands.CommandOnCooldown):
             
-            await interaction.response.send_message(f"{error.retry_after:.2f}秒も待てないの?童貞♡", ephemeral=True)
+            await interaction.response.send_message(f"どーてーは{error.retry_after:.2f}秒も待てないの?♡", ephemeral=True)
         else:
             raise error
 
@@ -19,7 +19,7 @@ class Messaging(commands.Cog):
         if phrase:
             await interaction.response.send_message(phrase + suffix)
         else:
-            await interaction.response.send_message("データベーススカスカじゃん♡ もっとマシな言葉教えなよね♡", ephemeral=True)
+            await interaction.response.send_message("データベーススカスカじゃん♡ 早く言葉登録してよね♡", ephemeral=True)
 
     @app_commands.command(name="batou", description="罵倒します")
     async def batou(self, interaction: discord.Interaction):
@@ -31,13 +31,13 @@ class Messaging(commands.Cog):
 
     async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, db_name: str):
         if len(phrase) > 100:
-            await interaction.response.send_message("長すぎ♡ 100文字以内で我慢しなよね♡", ephemeral=True)
+            await interaction.response.send_message("なっが～♡ 100文字以内で我慢してよね♡", ephemeral=True)
             return
 
         if db_handler.add_phrase(db_name, phrase):
             await interaction.response.send_message(f"「{phrase}」ね♡ 新しい言葉、アタシが覚えててあげる♡")
         else:
-            await interaction.response.send_message(f"「{phrase}」なんてもう知ってるし♡ ザコは同じこと言わないでよね♡", ephemeral=True)
+            await interaction.response.send_message(f"「{phrase}」なんてもう知ってるし♡ ザコは同じことばっかり言うよね♡", ephemeral=True)
 
     @app_commands.command(name="add_batou", description="罵倒の語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
