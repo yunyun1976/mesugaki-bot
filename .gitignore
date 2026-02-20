@@ -2,5 +2,4 @@
 .env
 data
 .request.md
-__pycache__
-*.pyc
+**/__pycache__/**
