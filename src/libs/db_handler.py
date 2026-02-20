@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from typing import Union
 
 DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
 
@@ -15,7 +16,7 @@ def get_db_connection(db_name: str):
     """Gets a connection to the specified database."""
     return sqlite3.connect(os.path.join(DB_DIR, db_name))
 
-def get_random_phrase(db_name: str) -> str | None:
+def get_random_phrase(db_name: str) -> Union[str, None]:
     """Gets a random phrase from the specified database."""
     try:
         with get_db_connection(db_name) as conn:
