@@ -4,8 +4,13 @@ from typing import Union
 
 DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
 
+# Define allowed database names
+ALLOWED_DB_NAMES = ["barizougon.db", "abikyoukan.db"]
+
 def init_db(db_name: str):
     """Initializes the database and creates the phrases table if it doesn't exist."""
+    if db_name not in ALLOWED_DB_NAMES:
+        raise ValueError(f"Unauthorized database name: {db_name}")
     os.makedirs(DB_DIR, exist_ok=True)
     with sqlite3.connect(os.path.join(DB_DIR, db_name)) as conn:
         c = conn.cursor()
@@ -14,6 +19,8 @@ def init_db(db_name: str):
 
 def get_db_connection(db_name: str):
     """Gets a connection to the specified database."""
+    if db_name not in ALLOWED_DB_NAMES:
+        raise ValueError(f"Unauthorized database name: {db_name}")
     return sqlite3.connect(os.path.join(DB_DIR, db_name))
 
 def get_random_phrase(db_name: str) -> Union[str, None]:
