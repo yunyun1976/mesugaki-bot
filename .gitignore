@@ -4,3 +4,5 @@ data
 .request.md
 **/__pycache__/**
 .pyc
+
+ISSUE.md
