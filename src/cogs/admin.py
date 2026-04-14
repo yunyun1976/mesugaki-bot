@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from libs import db_handler, master_handler
+from libs import db_handler, master_handler, config_handler
 from typing import List
 
 # Helper View for pagination
@@ -145,6 +145,36 @@ class Admin(commands.Cog):
             await interaction.response.send_message(f"{user.mention} をマスターユーザーから外してあげたよ♡ これで{user.mention}もただのザコだね♡", ephemeral=True)
         else:
             await interaction.response.send_message(f"{user.mention} はもともとマスターユーザーじゃないみたいだよ♡ キミの勘違いじゃない？♡", ephemeral=True)
+
+    @app_commands.command(name="set_channel", description="このチャンネルを通知用チャンネルに設定します")
+    async def set_channel(self, interaction: discord.Interaction):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
+            return
+        
+        config_handler.set_announcement_channel(interaction.guild_id, interaction.channel_id)
+        await interaction.response.send_message(f"このチャンネルを通知用に設定してあげたよ♡ 感謝しなさいよね♡", ephemeral=True)
+
+    @app_commands.command(name="unset_channel", description="このサーバーの通知用チャンネルの設定を解除します")
+    async def unset_channel(self, interaction: discord.Interaction):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
+            return
+        
+        config_handler.unset_announcement_channel(interaction.guild_id)
+        await interaction.response.send_message(f"通知設定を消してあげたよ♡ これで静かになるね♡", ephemeral=True)
+
+    @app_commands.command(name="sync", description="コマンドをこのサーバーに即時同期します")
+    async def sync(self, interaction: discord.Interaction):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡", ephemeral=True)
+            return
+        
+        await interaction.response.defer(ephemeral=True)
+        # Copy global commands to this guild and sync
+        self.bot.tree.copy_global_to(guild=interaction.guild)
+        synced = await self.bot.tree.sync(guild=interaction.guild)
+        await interaction.followup.send(f"このサーバーに {len(synced)} 個のコマンドを同期してあげたよ♡ 感謝しなさいよね♡", ephemeral=True)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Admin(bot))
