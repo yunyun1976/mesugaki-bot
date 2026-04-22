@@ -20,7 +20,8 @@ class Events(commands.Cog):
                replied_to_message.content.endswith('♡') and \
                not replied_to_message.content.endswith('♡♡♡'):
                 
-                reply_content = f"ザコが反応した♡ かわいい♡\n> {message.content}"
+                quoted_content = "\n".join([f"> {line}" for line in message.content.splitlines()])
+                reply_content = f"ザコが反応した♡ かわいい♡\n{quoted_content}"
                 await message.reply(reply_content)
 
 async def setup(bot: commands.Bot):
