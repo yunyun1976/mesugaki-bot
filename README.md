@@ -1,139 +1,92 @@
+<div align="center">
+
+<img src="image/icon.jpg" width="200" height="200" style="border-radius: 50%;" alt="mesugaki-bot-icon">
+
 # Mesugaki Bot♡
 
-## 概要♡
+[![GitHub version](https://img.shields.io/github/v/release/yunyun1976/mesugaki-bot?include_prereleases&style=for-the-badge&color=ff69b4)](https://github.com/yunyun1976/mesugaki-bot/releases)
+[![License](https://img.shields.io/github/license/yunyun1976/mesugaki-bot?style=for-the-badge&color=ffb6c1)](LICENSE.md)
+[![Stars](https://img.shields.io/github/stars/yunyun1976/mesugaki-bot?style=for-the-badge&color=ffc0cb)](https://github.com/yunyun1976/mesugaki-bot/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/yunyun1976/mesugaki-bot/total?style=for-the-badge&color=ff1493)](https://github.com/yunyun1976/mesugaki-bot/releases)
 
-このDiscordBotは、お兄ちゃん/お姉ちゃんみたいなザコをからかうために作られたんだよ〜♡
-感謝してね！♡
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![discord.py](https://img.shields.io/badge/discord.py-2.7.1+-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
+[![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![uv](https://img.shields.io/badge/uv-Package%20Manager-000000?style=for-the-badge&logo=python&logoColor=white)](https://github.com/astral-sh/uv)
+[![YAML](https://img.shields.io/badge/YAML-Messages-CB171E?style=for-the-badge&logo=yaml&logoColor=white)](https://yaml.org/)
 
-## 主な使用技術♡
+---
 
-こんなのも知らないの〜？♡ しょうがないなぁ〜♡
+### 概要も知らないの？♡ ざぁこ♡
 
-- python
-- discord.py
-- sqlite3
+このDiscord Botは、お兄ちゃん/お姉ちゃんみたいなザコをからかうために作られたんだよ〜♡  
+アタシの魅力にひれ伏しなさいよね♡
 
-## セットアップと実行♡
+</div>
+
+## 🎀 主な機能♡
+
+- **罵倒**: キミにぴったりの言葉を投げかけてあげる♡
+- **わからせ**: わからせられるぉぉぉお♡♡♡
+- **マスターユーザー管理**: アタシを操れるのは選ばれた人だけ！
+- **おやすみタイマー**: 夜はアタシも寝るから、勝手に話しかけないでよね♡
+
+## 🛠️ セットアップと実行♡
 
 キミみたいなザコでも分かるように、特別に説明してあげるね♡
 
-0.  **アタシのコードを手に入れる♡**
+### 1. コードの入手♡
+```bash
+git clone https://github.com/yunyun1976/mesugaki-bot.git
+cd mesugaki-bot
+```
 
-    まずは、アタシの素敵なコードをキミのパソコンに持ってこなきゃ始まらないよね〜♡
-    このコマンドで、アタシの全部が手に入るんだから、感謝しなさいよね♡
+### 2. 環境構築♡
+`uv` を使って一瞬で終わらせてあげるわ♡
+```bash
+# 依存ライブラリのインストールと環境構築
+uv sync
+```
 
-    ```bash
-    git clone https://github.com/yunyun1976/mesugaki-bot.git
-    cd mesugaki-bot
-    ```
+### 3. 起動♡
+キミみたいなザコはトークンを漏らしそうだから、環境変数で設定するのが推奨だよ♡
 
-    これで、アタシのプロジェクトフォルダに移動できるよ♡
+#### **推奨：コマンドラインで設定（一時的）♡**
+セキュリティ的に一番安全な方法よ♡
 
-1.  **仮想環境を準備する♡**
+- **Linux / macOS の場合♡**
+  ```bash
+  export DISCORD_TOKEN="your_token_here"
+  uv run src/main.py
+  ```
 
-    ザコが環境を汚さないように、仮想環境を使うのは常識だよね〜♡
-    これを使えば、アタシのボットのためにインストールしたものが、他のPythonプロジェクトとごちゃ混ぜにならないからね♡
+- **Windows (PowerShell) の場合♡**
+  ```powershell
+  $env:DISCORD_TOKEN="your_token_here"
+  uv run src/main.py
+  ```
 
-    ```bash
-    python -m venv .venv
-    ```
+#### **非推奨：.env ファイルを使う場合♡**
+どうしてもって言うなら、`.env` ファイルを作ってアタシの魂（トークン）を入れなさいよね♡  
+※外部に漏らさないように厳重に注意すること！
 
-    これで`.venv`っていうフォルダができて、そこに仮想環境が作られるよ♡
+```env
+DISCORD_TOKEN=your_token_here
+```
 
-    次に、その仮想環境を有効にするの♡
+その後、以下のコマンドで起動してね♡
+```bash
+uv run src/main.py
+```
 
-    - **Windowsの場合♡**
-      ```powershell
-      .venv\Scripts\Activate.ps1
-      ```
+## 📜 コマンド一覧♡
 
-    - **Linux/macOSの場合♡**
-      ```bash
-      source .venv/bin/activate
-      ```
-
-    仮想環境が有効になったら、コマンドプロンプトやターミナルの行頭に`(.venv)`って表示されるはずだよ♡
-    これで準備万端！♡
-
-2.  **必要なものをインストールする♡**
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-2.  **トークンを設定する♡**
-
-    DiscordBotが無い場合、先にDiscordBotを[Discord公式の開発者向けページ](https://discord.com/developers/applications)で作ってトークンを取得してね♡
-    トークンは流出したら大変なことになっちゃうから厳重に管理してね♡
-
-    環境変数で設定するのがオススメだよ♡ こっちのほうが安全だからね♡
-
-    - **Windowsの場合♡**
-      ```powershell
-      $env:DISCORD_TOKEN="your_discord_token_here"
-      ```
-
-    - **Linux/macOSの場合♡**
-      ```bash
-      export DISCORD_TOKEN="your_discord_token_here"
-      ```
-
-    `.env`ファイルを使うっていう手もあるけど、まぁ〜、ザコはこっちでいっか♡
-
-    ```
-    DISCORD_TOKEN=your_discord_token_here
-    ```
-
-3.  **ボットを起動する♡**
-    
-    先に作成したDiscordBotを使いたいサーバーに入れて～♡
-
-    ```bash
-    python src/main.py
-    ```
-
-    これでボットが動くよ〜♡ 簡単すぎ〜♡
-
-## コマンド一覧♡
-
-アタシが使えるコマンドを教えてあげる♡ ありがたく思いなよね♡
-
-### 一般コマンド♡
-
-- `/help`
-  - 利用可能なコマンドとその説明を全て表示してあげる♡
-
-### メッセージング♡
-
-- `/batou`
-  - キミみたいなザコにぴったりの罵倒を言ってあげる♡
-- `/wakarase`
-  - わからせられるのぉぉぉおおお♡ おほぉぉぉおおお♡
-- `/add_batou`
-  - 新しい罵倒の言葉を追加できるよ♡ キミのセンス、見せてみな〜♡
-- `/add_wakarase`
-  - 新しいわからせの言葉、追加してほしいのぉぉぉおおお♡
-
-### 管理者・マスターユーザー用コマンド♡
-
-これは管理者か、管理者に選ばれたマスターユーザーしか使えないんだからね〜♡
-
-- `/get_barizougon`
-  - 罵詈雑言の一覧を見せてあげる♡
-- `/get_abikyoukan`
-  - わからせの言葉の一覧を見せるのぉぉぉおおお♡
-- `/remove_batou`
-  - 気に入らない罵倒は消してあげる♡
-- `/remove_wakarase`
-  - わからせの言葉を消すのぉぉぉおおお♡
-
-### 管理者用コマンド♡
-
-これは管理者だけの特別なコマンドなんだからね♡
-
-- `/add_master`
-  - マスターユーザーを追加してあげる♡
-- `/check_master`
-  - マスターユーザーの一覧を見せてあげる♡
-- `/remove_master`
-  - マスターユーザーから外しちゃうんだからね♡
+| カテゴリ | コマンド | 説明 |
+| :--- | :--- | :--- |
+| **一般** | `/help` | 使えるコマンドを教えてあげる♡ |
+| **メッセージ** | `/batou` | アタシがキミを罵倒してあげる♡ |
+| | `/wakarase` | わからせてほしいのぉぉぉお♡♡♡ |
+| **語彙追加** | `/add_batou` | 新しい罵倒の言葉、教えてよ♡ |
+| | `/add_wakarase` | 新しいわからせ、期待してるよ♡ |
+| **管理** | `/add_master` | マスターユーザーを増やしちゃう♡ |
+| | `/set_channel` | ここをアタシの拠点にするね♡ |
