@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from libs.message_handler import MessageHandler
 
 class Events(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -21,7 +22,7 @@ class Events(commands.Cog):
                not replied_to_message.content.endswith('♡♡♡'):
                 
                 quoted_content = "\n".join([f"> {line}" for line in message.content.splitlines()])
-                reply_content = f"ザコが反応した♡ かわいい♡\n{quoted_content}"
+                reply_content = MessageHandler.get('events.reply_to_batou', quoted_content=quoted_content)
                 await message.reply(reply_content)
 
 async def setup(bot: commands.Bot):

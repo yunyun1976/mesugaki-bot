@@ -2,6 +2,7 @@
 .venv_old
 .env
 data
+!data/messages.yaml
 .request.md
 **/__pycache__/**
 .pyc

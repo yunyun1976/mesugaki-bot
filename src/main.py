@@ -4,6 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from libs import master_handler, db_handler, config_handler
 from libs.constants import JST
+from libs.message_handler import MessageHandler
 import datetime
 import random
 
@@ -25,13 +26,7 @@ class MyBot(commands.Bot):
         async def global_interaction_check(interaction: discord.Interaction) -> bool:
             now = datetime.datetime.now(JST)
             if now.hour >= 21 or now.hour < 6:
-                sleeping_messages = [
-                    "( ˘ω˘)ｽﾔｧ...",
-                    "Zzz...",
-                    "ﾑﾆｬﾑﾆｬ...",
-                    "ｻﾞｧｺ...♡",
-                    "😴"
-                ]
+                sleeping_messages = MessageHandler.get('sleeping.random_messages')
                 await interaction.response.send_message(random.choice(sleeping_messages), ephemeral=True)
                 return False
             return True
@@ -69,7 +64,7 @@ class MyBot(commands.Bot):
             channel = self.get_channel(channel_id)
             if channel:
                 try:
-                    await channel.send(f"{self.user.name}、きっど～う♡")
+                    await channel.send(MessageHandler.get('system.startup', name=self.user.name))
                 except Exception as e:
                     print(f"Failed to send startup message to {channel_id}: {e}")
 

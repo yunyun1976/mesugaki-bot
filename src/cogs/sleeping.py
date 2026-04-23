@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 from libs import config_handler
 from libs.constants import JST
+from libs.message_handler import MessageHandler
 import datetime
 import random
 
@@ -19,9 +20,9 @@ class Sleeping(commands.Cog):
         now = datetime.datetime.now(JST)
         message = ""
         if now.hour == 21:
-            message = "寝るッ♡寝ちゃうのぉぉお♡♡♡"
+            message = MessageHandler.get('sleeping.good_night')
         elif now.hour == 6:
-            message = "きっしょぉ～♡"
+            message = MessageHandler.get('sleeping.wake_up')
         else:
             return
 
