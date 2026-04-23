@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from libs import master_handler, db_handler, config_handler
+from libs.constants import JST
 import datetime
 import random
 
@@ -22,8 +23,7 @@ class MyBot(commands.Bot):
 
         # Add interaction check
         async def global_interaction_check(interaction: discord.Interaction) -> bool:
-            jst = datetime.timezone(datetime.timedelta(hours=9))
-            now = datetime.datetime.now(jst)
+            now = datetime.datetime.now(JST)
             if now.hour >= 21 or now.hour < 6:
                 sleeping_messages = [
                     "( ˘ω˘)ｽﾔｧ...",

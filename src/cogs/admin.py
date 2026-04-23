@@ -4,6 +4,9 @@ from discord import app_commands
 from libs import db_handler, master_handler, config_handler
 from typing import List
 
+# Constants for Pagination
+PER_PAGE = 10
+
 # Helper View for pagination
 class PaginationView(discord.ui.View):
     def __init__(self, phrases: List[str], title: str):
@@ -11,12 +14,11 @@ class PaginationView(discord.ui.View):
         self.phrases = phrases
         self.title = title
         self.current_page = 0
-        self.per_page = 10
-        self.total_pages = -(-len(self.phrases) // self.per_page)  # Ceiling division
+        self.total_pages = -(-len(self.phrases) // PER_PAGE)  # Ceiling division
 
     async def get_page_content(self):
-        start = self.current_page * self.per_page
-        end = start + self.per_page
+        start = self.current_page * PER_PAGE
+        end = start + PER_PAGE
         page_phrases = self.phrases[start:end]
         
         embed = discord.Embed(
@@ -51,6 +53,12 @@ class PaginationView(discord.ui.View):
 class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+    async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.CommandOnCooldown):
+            await interaction.response.send_message(f"どーてーは{error.retry_after:.2f}秒も待てないの?♡", ephemeral=True)
+        else:
+            raise error
 
     def is_authorized(self, interaction: discord.Interaction) -> bool:
         """Checks if the user is an administrator or a master user."""

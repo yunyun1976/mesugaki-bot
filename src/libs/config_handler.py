@@ -1,13 +1,13 @@
 import sqlite3
 import os
+from libs.constants import DATA_DIR
 
-DB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
 DB_NAME = 'config.db'
-DB_PATH = os.path.join(DB_DIR, DB_NAME)
+DB_PATH = os.path.join(DATA_DIR, DB_NAME)
 
 def init_config_db():
     """Initializes the config database and creates the channels table."""
-    os.makedirs(DB_DIR, exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
         c.execute("CREATE TABLE IF NOT EXISTS announcement_channels (guild_id INTEGER PRIMARY KEY, channel_id INTEGER)")

@@ -1,22 +1,22 @@
 import discord
 from discord.ext import commands, tasks
 from libs import config_handler
+from libs.constants import JST
 import datetime
 import random
 
 class Sleeping(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.jst = datetime.timezone(datetime.timedelta(hours=9))
         self.scheduled_messages.start()
 
     def cog_unload(self):
         self.scheduled_messages.cancel()
 
-    @tasks.loop(time=[datetime.time(hour=21, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=9))),
-                      datetime.time(hour=6, minute=0, tzinfo=datetime.timezone(datetime.timedelta(hours=9)))])
+    @tasks.loop(time=[datetime.time(hour=21, minute=0, tzinfo=JST),
+                      datetime.time(hour=6, minute=0, tzinfo=JST)])
     async def scheduled_messages(self):
-        now = datetime.datetime.now(self.jst)
+        now = datetime.datetime.now(JST)
         message = ""
         if now.hour == 21:
             message = "寝るッ♡寝ちゃうのぉぉお♡♡♡"
