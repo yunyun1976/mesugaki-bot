@@ -1,0 +1,20 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 新機能'
+    labels:
+      - 'feature'
+      - 'enhancement'
+  - title: '🐛 バグ修正'
+    labels:
+      - 'bug'
+  - title: '🛠️ その他'
+    labels:
+      - 'chore'
+      - 'documentation'
+template: |
+  ## 🎀 今回の変更点
+  $CHANGES
+  
+  ## 🛠️ 開発者コメント
+  （リリースの詳細や補足事項があればここに記述してください）
