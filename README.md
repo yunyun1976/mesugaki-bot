@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="image/icon.jpg" width="200" height="200" style="border-radius: 50%;" alt="mesugaki-bot-icon">
+<img src="image/icon.png" width="200" height="200" style="border-radius: 50%;" alt="mesugaki-bot-icon">
+
+😭😭😭😭😭😭😭😭
 
 # Mesugaki Bot♡
 

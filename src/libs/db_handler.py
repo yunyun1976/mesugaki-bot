@@ -68,7 +68,7 @@ def remove_phrase(db_name: str, phrase: str) -> bool:
             c = conn.cursor()
             c.execute("DELETE FROM phrases WHERE phrase = ?", (phrase,))
             conn.commit()
-            return c.rowcount > 0
+            return conn.total_changes > 0
     except sqlite3.Error as e:
         print(f"Database error: {e}")
         return False

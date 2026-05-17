@@ -10,17 +10,13 @@ class Messaging(commands.Cog):
 
     async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, app_commands.CommandOnCooldown):
-            
-            await interaction.response.send_message(MessageHandler.get('common.cooldown', retry_after=error.retry_after), ephemeral=True)
+            content = MessageHandler.get('common.cooldown', retry_after=error.retry_after)
+            if interaction.response.is_done():
+                await interaction.followup.send(content, ephemeral=True)
+            else:
+                await interaction.response.send_message(content, ephemeral=True)
         else:
             raise error
-
-    async def _send_random_phrase_helper(self, interaction: discord.Interaction, db_name: str, suffix: str):
-        phrase = db_handler.get_random_phrase(db_name)
-        if phrase:
-            await interaction.response.send_message(phrase + suffix)
-        else:
-            await interaction.response.send_message(MessageHandler.get('messaging.db_empty'), ephemeral=True)
 
     @app_commands.command(name="batou", description="罵倒します")
     async def batou(self, interaction: discord.Interaction):
@@ -30,15 +26,22 @@ class Messaging(commands.Cog):
     async def wakarase(self, interaction: discord.Interaction):
         await self._send_random_phrase_helper(interaction, "abikyoukan.db", "ぉぉぉお♡♡♡")
 
+    async def _send_random_phrase_helper(self, interaction: discord.Interaction, db_name: str, suffix: str):
+        phrase = db_handler.get_random_phrase(db_name)
+        if phrase:
+            await interaction.followup.send(phrase + suffix)
+        else:
+            await interaction.followup.send(MessageHandler.get('messaging.db_empty'), ephemeral=True)
+
     async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, db_name: str):
         if len(phrase) > 100:
-            await interaction.response.send_message(MessageHandler.get('messaging.add_too_long'), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('messaging.add_too_long'), ephemeral=True)
             return
 
         if db_handler.add_phrase(db_name, phrase):
-            await interaction.response.send_message(MessageHandler.get('messaging.add_success', phrase=phrase))
+            await interaction.followup.send(MessageHandler.get('messaging.add_success', phrase=phrase))
         else:
-            await interaction.response.send_message(MessageHandler.get('messaging.add_already_exists', phrase=phrase), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('messaging.add_already_exists', phrase=phrase), ephemeral=True)
 
     @app_commands.command(name="add_batou", description="罵倒の語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")

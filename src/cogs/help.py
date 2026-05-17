@@ -19,7 +19,7 @@ class Help(commands.Cog):
             for command in commands_list:
                 embed.add_field(name=f"/{command.name}", value=command.description or "説明なし", inline=False)
 
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.followup.send(embed=embed, ephemeral=True)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Help(bot))

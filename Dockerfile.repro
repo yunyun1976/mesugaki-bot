@@ -1,0 +1,28 @@
+# Pi Zero WH (ARMv6) の処理速度をエミュレートするための再現用Dockerfile
+FROM python:3.13-slim-bookworm
+
+# システム依存関係のインストール
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libsqlite3-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# uvのインストール (pip経由でインストールすることでパスの問題を回避)
+RUN pip install uv
+
+WORKDIR /app
+
+# プロジェクトファイルのコピー
+COPY pyproject.toml uv.lock ./
+COPY src/ ./src/
+COPY data/ ./data/
+
+# 依存関係のインストール
+RUN uv sync --frozen
+
+# ログ出力のバッファリングを無効化
+ENV PYTHONUNBUFFERED=1
+
+# 起動コマンド
+CMD ["uv", "run", "src/main.py"]
