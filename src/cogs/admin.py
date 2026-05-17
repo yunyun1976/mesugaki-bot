@@ -57,7 +57,11 @@ class Admin(commands.Cog):
 
     async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, app_commands.CommandOnCooldown):
-            await interaction.response.send_message(MessageHandler.get('common.cooldown', retry_after=error.retry_after), ephemeral=True)
+            content = MessageHandler.get('common.cooldown', retry_after=error.retry_after)
+            if interaction.response.is_done():
+                await interaction.followup.send(content, ephemeral=True)
+            else:
+                await interaction.response.send_message(content, ephemeral=True)
         else:
             raise error
 
@@ -68,14 +72,20 @@ class Admin(commands.Cog):
     async def _check_authorized(self, interaction: discord.Interaction) -> bool:
         """権限チェックを行い、権限がない場合はメッセージを送信してFalseを返します。"""
         if not self.is_authorized(interaction):
-            await interaction.response.send_message(MessageHandler.get('common.no_permission'), ephemeral=True)
+            if interaction.response.is_done():
+                await interaction.followup.send(MessageHandler.get('common.no_permission'), ephemeral=True)
+            else:
+                await interaction.response.send_message(MessageHandler.get('common.no_permission'), ephemeral=True)
             return False
         return True
 
     async def _check_admin(self, interaction: discord.Interaction) -> bool:
         """管理者チェックを行い、管理者でない場合はメッセージを送信してFalseを返します。"""
         if not interaction.user.guild_permissions.administrator:
-            await interaction.response.send_message(MessageHandler.get('common.admin_only'), ephemeral=True)
+            if interaction.response.is_done():
+                await interaction.followup.send(MessageHandler.get('common.admin_only'), ephemeral=True)
+            else:
+                await interaction.response.send_message(MessageHandler.get('common.admin_only'), ephemeral=True)
             return False
         return True
 
@@ -83,7 +93,6 @@ class Admin(commands.Cog):
         if not await self._check_authorized(interaction):
             return
 
-        await interaction.response.defer(ephemeral=True)
         phrases = db_handler.get_all_phrases(db_name)
 
         if not phrases:
@@ -110,9 +119,9 @@ class Admin(commands.Cog):
             return
 
         if db_handler.remove_phrase("barizougon.db", phrase):
-            await interaction.response.send_message(MessageHandler.get('admin.remove_success', phrase=phrase))
+            await interaction.followup.send(MessageHandler.get('admin.remove_success', phrase=phrase))
         else:
-            await interaction.response.send_message(MessageHandler.get('admin.remove_failed', phrase=phrase), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.remove_failed', phrase=phrase), ephemeral=True)
 
     @app_commands.command(name="remove_wakarase", description="わからせの語彙を削除します")
     @app_commands.describe(phrase="削除するフレーズ")
@@ -121,9 +130,9 @@ class Admin(commands.Cog):
             return
 
         if db_handler.remove_phrase("abikyoukan.db", phrase):
-            await interaction.response.send_message(MessageHandler.get('admin.remove_success', phrase=phrase))
+            await interaction.followup.send(MessageHandler.get('admin.remove_success', phrase=phrase))
         else:
-            await interaction.response.send_message(MessageHandler.get('admin.remove_failed', phrase=phrase), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.remove_failed', phrase=phrase), ephemeral=True)
 
     @app_commands.command(name="add_master", description="マスターユーザーを追加します")
     @app_commands.describe(user="追加するユーザー")
@@ -132,9 +141,9 @@ class Admin(commands.Cog):
             return
 
         if master_handler.add_master(user.id):
-            await interaction.response.send_message(MessageHandler.get('admin.master_added', user_mention=user.mention), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.master_added', user_mention=user.mention), ephemeral=True)
         else:
-            await interaction.response.send_message(MessageHandler.get('admin.master_already_exists', user_mention=user.mention), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.master_already_exists', user_mention=user.mention), ephemeral=True)
 
     @app_commands.command(name="check_master", description="マスターユーザーの一覧を表示します")
     async def check_master(self, interaction: discord.Interaction):
@@ -143,14 +152,14 @@ class Admin(commands.Cog):
 
         masters = master_handler.get_all_masters()
         if not masters:
-            await interaction.response.send_message(MessageHandler.get('admin.master_list_empty'), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.master_list_empty'), ephemeral=True)
             return
 
         embed = discord.Embed(title="マスターユーザー一覧")
         for user_id in masters:
             user = self.bot.get_user(user_id)
             embed.add_field(name=user.name if user else f"ID: {user_id}", value="", inline=False)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.followup.send(embed=embed, ephemeral=True)
 
     @app_commands.command(name="remove_master", description="マスターユーザーを削除します")
     @app_commands.describe(user="削除するユーザー")
@@ -159,9 +168,9 @@ class Admin(commands.Cog):
             return
 
         if master_handler.remove_master(user.id):
-            await interaction.response.send_message(MessageHandler.get('admin.master_removed', user_mention=user.mention), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.master_removed', user_mention=user.mention), ephemeral=True)
         else:
-            await interaction.response.send_message(MessageHandler.get('admin.master_remove_failed', user_mention=user.mention), ephemeral=True)
+            await interaction.followup.send(MessageHandler.get('admin.master_remove_failed', user_mention=user.mention), ephemeral=True)
 
     @app_commands.command(name="set_channel", description="このチャンネルを通知用チャンネルに設定します")
     async def set_channel(self, interaction: discord.Interaction):
@@ -169,7 +178,7 @@ class Admin(commands.Cog):
             return
         
         config_handler.set_announcement_channel(interaction.guild_id, interaction.channel_id)
-        await interaction.response.send_message(MessageHandler.get('admin.channel_set'), ephemeral=True)
+        await interaction.followup.send(MessageHandler.get('admin.channel_set'), ephemeral=True)
 
     @app_commands.command(name="unset_channel", description="このサーバーの通知用チャンネルの設定を解除します")
     async def unset_channel(self, interaction: discord.Interaction):
@@ -177,14 +186,13 @@ class Admin(commands.Cog):
             return
         
         config_handler.unset_announcement_channel(interaction.guild_id)
-        await interaction.response.send_message(MessageHandler.get('admin.channel_unset'), ephemeral=True)
+        await interaction.followup.send(MessageHandler.get('admin.channel_unset'), ephemeral=True)
 
     @app_commands.command(name="sync", description="コマンドをこのサーバーに即時同期します")
     async def sync(self, interaction: discord.Interaction):
         if not await self._check_admin(interaction):
             return
         
-        await interaction.response.defer(ephemeral=True)
         # Copy global commands to this guild and sync
         self.bot.tree.copy_global_to(guild=interaction.guild)
         synced = await self.bot.tree.sync(guild=interaction.guild)
