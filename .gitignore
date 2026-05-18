@@ -1,7 +1,7 @@
 .venv
 .venv_old
 .env
-data
+data/*
 !data/messages.yaml
 .request.md
 **/__pycache__/**
