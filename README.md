@@ -11,7 +11,7 @@
 [![Stars](https://img.shields.io/github/stars/yunyun1976/mesugaki-bot?style=for-the-badge&color=ffc0cb)](https://github.com/yunyun1976/mesugaki-bot/stargazers)
 [![Downloads](https://img.shields.io/github/downloads/yunyun1976/mesugaki-bot/total?style=for-the-badge&color=ff1493)](https://github.com/yunyun1976/mesugaki-bot/releases)
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.15+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![discord.py](https://img.shields.io/badge/discord.py-2.7.1+-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
 [![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![uv](https://img.shields.io/badge/uv-Package%20Manager-000000?style=for-the-badge&logo=python&logoColor=white)](https://github.com/astral-sh/uv)

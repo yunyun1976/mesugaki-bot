@@ -1,0 +1,39 @@
+common:
+  cooldown: "どーてーは{retry_after:.2f}秒も待てないの?♡"
+  no_permission: "キミには権限がないみたいだね♡管理者かマスターユーザーになってからもう一回おいで♡"
+  admin_only: "管理者様だけが使えるんだよ〜♡ キミは使えないの♡ 残念だったね♡"
+
+admin:
+  phrases_empty: "まだ何も登録されてないみたいだよ♡ ザコは早く登録しなよね♡"
+  remove_success: "「{phrase}」なんてザコな言葉、アタシが消してあげたよ♡感謝しなさいよね♡"
+  remove_failed: "「{phrase}」なんて言葉、最初からなかったみたいだよ♡ キミの勘違いじゃない？♡"
+  master_added: "{user_mention} をマスターユーザーにしてあげたよ♡ アタシに感謝しなさいよね♡"
+  master_already_exists: "{user_mention} はもうマスターユーザーだよ♡ 同じこと2回も言わせないでよね♡"
+  master_list_empty: "マスターユーザーなんて一人もいないみたいだよ♡ ザコばっかりだね♡"
+  master_removed: "{user_mention} をマスターユーザーから外してあげたよ♡ これで{user_mention}もただのザコだね♡"
+  master_remove_failed: "{user_mention} はもともとマスターユーザーじゃないみたいだよ♡ キミの勘違いじゃない？♡"
+  channel_set: "このチャンネルを通知用に設定してあげたよ♡ 感謝しなさいよね♡"
+  channel_unset: "通知設定を消してあげたよ♡ これで静かになるね♡"
+  sync_success: "このサーバーに {count} 個のコマンドを同期してあげたよ♡ 感謝しなさいよね♡"
+
+messaging:
+  db_empty: "データベーススカスカじゃん♡ 早く言葉登録してよね♡"
+  add_too_long: "なっが～♡ 100文字以内で我慢してよね♡"
+  add_success: "「{phrase}」ね♡ 新しい言葉、アタシが覚えててあげる♡"
+  add_already_exists: "「{phrase}」なんてもう知ってるし♡ ザコは同じことばっかり言うよね♡"
+
+events:
+  reply_to_batou: "ザコが反応した♡ かわいい♡\n{quoted_content}"
+
+sleeping:
+  good_night: "寝るッ♡寝ちゃうのぉぉお♡♡♡"
+  wake_up: "きっしょぉ～♡"
+  random_messages:
+    - "( ˘ω˘)ｽﾔｧ..."
+    - "Zzz..."
+    - "ﾑﾆｬﾑﾆｬ..."
+    - "ｻﾞｧｺ...♡"
+    - "😴"
+
+system:
+  startup: "{name}、きっど～う♡"
