@@ -24,17 +24,21 @@ class MyBot(commands.Bot):
 
         # Add interaction check
         async def global_interaction_check(interaction: discord.Interaction) -> bool:
-            # 1. 何よりも先に、まずdeferする (1msでも早くDiscordに応答を返す)
+            # 1. 睡眠判定を行う
+            now = datetime.datetime.now(JST)
+            is_sleeping = now.hour >= 21 or now.hour < 6
+
+            # 2. deferする (1msでも早くDiscordに応答を返す)
             if interaction.type == discord.InteractionType.application_command:
                 if not interaction.response.is_done():
                     # 公開コマンドか判定
                     command_name = interaction.data.get('name') if interaction.data else None
                     is_public = command_name in ['batou', 'wakarase']
-                    await interaction.response.defer(ephemeral=not is_public)
+                    # 睡眠中、または非公開設定のコマンドならephemeralにする
+                    await interaction.response.defer(ephemeral=(is_sleeping or not is_public))
 
-            # 2. その後、時間をかけて重い処理（JST取得、メッセージロード、判定など）を行う
-            now = datetime.datetime.now(JST)
-            if now.hour >= 21 or now.hour < 6:
+            # 3. 睡眠中の場合はメッセージを送信して終了
+            if is_sleeping:
                 sleeping_messages = MessageHandler.get('sleeping.random_messages')
                 await interaction.followup.send(random.choice(sleeping_messages), ephemeral=True)
                 return False
