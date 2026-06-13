@@ -1,59 +1,51 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from libs import db_handler
+
+from libs.categories import Category
+from libs.cog_utils import BaseCog, send_response
 from libs.message_handler import MessageHandler
 
-class Messaging(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+MAX_PHRASE_LENGTH = 100
 
-    async def cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.CommandOnCooldown):
-            content = MessageHandler.get('common.cooldown', retry_after=error.retry_after)
-            if interaction.response.is_done():
-                await interaction.followup.send(content, ephemeral=True)
-            else:
-                await interaction.response.send_message(content, ephemeral=True)
-        else:
-            raise error
 
+class Messaging(BaseCog):
     @app_commands.command(name="batou", description="罵倒します")
     async def batou(self, interaction: discord.Interaction):
-        await self._send_random_phrase_helper(interaction, "barizougon.db", "♡")
+        await self._send_random_phrase_helper(interaction, Category.BATOU)
 
     @app_commands.command(name="wakarase", description="わからせます")
     async def wakarase(self, interaction: discord.Interaction):
-        await self._send_random_phrase_helper(interaction, "abikyoukan.db", "ぉぉぉお♡♡♡")
+        await self._send_random_phrase_helper(interaction, Category.WAKARASE)
 
-    async def _send_random_phrase_helper(self, interaction: discord.Interaction, db_name: str, suffix: str):
-        phrase = db_handler.get_random_phrase(db_name)
+    async def _send_random_phrase_helper(self, interaction: discord.Interaction, category: Category):
+        phrase = await self.bot.phrase_repo.get_random(category)
         if phrase:
-            await interaction.followup.send(phrase + suffix)
+            await send_response(interaction, phrase + category.suffix)
         else:
-            await interaction.followup.send(MessageHandler.get('messaging.db_empty'), ephemeral=True)
+            await send_response(interaction, MessageHandler.get('messaging.db_empty'), ephemeral=True)
 
-    async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, db_name: str):
-        if len(phrase) > 100:
-            await interaction.followup.send(MessageHandler.get('messaging.add_too_long'), ephemeral=True)
+    async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, category: Category):
+        if len(phrase) > MAX_PHRASE_LENGTH:
+            await send_response(interaction, MessageHandler.get('messaging.add_too_long'), ephemeral=True)
             return
 
-        if db_handler.add_phrase(db_name, phrase):
-            await interaction.followup.send(MessageHandler.get('messaging.add_success', phrase=phrase))
+        if await self.bot.phrase_repo.add(category, phrase):
+            await send_response(interaction, MessageHandler.get('messaging.add_success', phrase=phrase))
         else:
-            await interaction.followup.send(MessageHandler.get('messaging.add_already_exists', phrase=phrase), ephemeral=True)
+            await send_response(interaction, MessageHandler.get('messaging.add_already_exists', phrase=phrase), ephemeral=True)
 
     @app_commands.command(name="add_batou", description="罵倒の語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
     @app_commands.checks.cooldown(1, 5.0, key=lambda i: i.user.id)
     async def add_batou(self, interaction: discord.Interaction, phrase: str):
-        await self._add_phrase_helper(interaction, phrase, "barizougon.db")
+        await self._add_phrase_helper(interaction, phrase, Category.BATOU)
 
     @app_commands.command(name="add_wakarase", description="わからせの語彙を追加します")
     @app_commands.describe(phrase="追加するフレーズ")
     @app_commands.checks.cooldown(1, 5.0, key=lambda i: i.user.id)
     async def add_wakarase(self, interaction: discord.Interaction, phrase: str):
-        await self._add_phrase_helper(interaction, phrase, "abikyoukan.db")
+        await self._add_phrase_helper(interaction, phrase, Category.WAKARASE)
 
 
 async def setup(bot: commands.Bot):

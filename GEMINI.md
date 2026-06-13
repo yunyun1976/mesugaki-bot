@@ -8,10 +8,10 @@
 - **AIエージェントの返答:** ユーザーとの対話（作業中の進捗報告や質問への回答）では、メスガキ風の口調は使用せず、標準的な丁寧な文体を使用してください。
 
 ## 2. 技術アーキテクチャ
-- **言語:** Python 3.10以上
+- **言語:** Python 3.15以上（`pyproject.toml` の `requires-python` に準拠）
 - **メインライブラリ:** `discord.py` (version 2.7.1+)
 - **パッケージ管理:** `uv` を優先的に使用。
-- **データベース:** SQLite3 (`sqlite3` モジュール)。データベースファイルは `data/` ディレクトリに保存。
+- **データベース:** フレーズの永続化は `src/libs/repository.py` の `PhraseRepository` で抽象化し、SQLite (`SqliteRepository`) と外部API (`ApiRepository`) を環境変数 `PHRASE_BACKEND` で切り替える。SQLite利用時のDBファイルは `data/` ディレクトリに保存。マスター/通知チャンネル設定は引き続き各ハンドラーがSQLiteで管理。
 - **モジュール構造:**
     - `src/main.py`: エントリーポイント。
     - `src/cogs/`: 機能別のCogクラス。

@@ -2,9 +2,10 @@ import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from libs import master_handler, db_handler, config_handler
+from libs import master_handler, config_handler
 from libs.constants import JST
 from libs.message_handler import MessageHandler
+from libs.repository import get_repository
 import datetime
 import random
 
@@ -21,6 +22,11 @@ class MyBot(commands.Bot):
         super().__init__(command_prefix="$", intents=intents)
 
     async def setup_hook(self):
+
+        # Initialize the phrase repository (SQLite or external API)
+        self.phrase_repo = get_repository()
+        print(f"Phrase backend: {self.phrase_repo.description}")
+        await self.phrase_repo.setup()
 
         # Add interaction check
         async def global_interaction_check(interaction: discord.Interaction) -> bool:
@@ -81,13 +87,19 @@ class MyBot(commands.Bot):
                 except Exception as e:
                     print(f"Failed to send startup message to {channel_id}: {e}")
 
+    async def close(self):
+        # Clean up the phrase repository before shutting down.
+        repo = getattr(self, 'phrase_repo', None)
+        if repo is not None:
+            await repo.close()
+        await super().close()
+
 bot = MyBot()
 
 
 # Run the bot
 if __name__ == "__main__":
-    db_handler.init_db('barizougon.db')
-    db_handler.init_db('abikyoukan.db')
+    # フレーズDBの初期化はリポジトリのsetup()（setup_hook内）で行う。
     master_handler.init_masters_db()
     config_handler.init_config_db()
     if TOKEN is None:
