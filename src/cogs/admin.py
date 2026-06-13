@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from libs import master_handler, config_handler
+from libs import master_handler, config_handler, ng_word_handler
 from libs.categories import Category
 from libs.cog_utils import BaseCog, send_response, check_authorized, check_admin
 from libs.message_handler import MessageHandler
@@ -149,6 +149,47 @@ class Admin(BaseCog):
 
         config_handler.unset_announcement_channel(interaction.guild_id)
         await send_response(interaction, MessageHandler.get('admin.channel_unset'), ephemeral=True)
+
+    @app_commands.command(name="add_ng_word", description="NGワードを追加します（登録できない言葉）")
+    @app_commands.describe(word="NGワードにする言葉")
+    async def add_ng_word(self, interaction: discord.Interaction, word: str):
+        if not await check_authorized(interaction):
+            return
+
+        if ng_word_handler.normalize(word) == "":
+            await send_response(interaction, MessageHandler.get('admin.ng_word_invalid'), ephemeral=True)
+            return
+
+        if ng_word_handler.add_ng_word(word):
+            await send_response(interaction, MessageHandler.get('admin.ng_word_added', word=word), ephemeral=True)
+        else:
+            await send_response(interaction, MessageHandler.get('admin.ng_word_already_exists', word=word), ephemeral=True)
+
+    @app_commands.command(name="remove_ng_word", description="NGワードを削除します")
+    @app_commands.describe(word="削除するNGワード")
+    async def remove_ng_word(self, interaction: discord.Interaction, word: str):
+        if not await check_authorized(interaction):
+            return
+
+        if ng_word_handler.remove_ng_word(word):
+            await send_response(interaction, MessageHandler.get('admin.ng_word_removed', word=word), ephemeral=True)
+        else:
+            await send_response(interaction, MessageHandler.get('admin.ng_word_remove_failed', word=word), ephemeral=True)
+
+    @app_commands.command(name="list_ng_word", description="NGワードの一覧を表示します")
+    async def list_ng_word(self, interaction: discord.Interaction):
+        if not await check_authorized(interaction):
+            return
+
+        ng_words = ng_word_handler.get_all_ng_words()
+        if not ng_words:
+            await send_response(interaction, MessageHandler.get('admin.ng_word_list_empty'), ephemeral=True)
+            return
+
+        view = PaginationView(ng_words, "NGワード一覧")
+        await view.update_buttons()
+        embed = await view.get_page_content()
+        await send_response(interaction, embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="sync", description="コマンドをこのサーバーに即時同期します")
     async def sync(self, interaction: discord.Interaction):

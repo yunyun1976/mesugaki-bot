@@ -15,12 +15,19 @@ admin:
   channel_set: "このチャンネルを通知用に設定してあげたよ♡ 感謝しなさいよね♡"
   channel_unset: "通知設定を消してあげたよ♡ これで静かになるね♡"
   sync_success: "このサーバーに {count} 個のコマンドを同期してあげたよ♡ 感謝しなさいよね♡"
+  ng_word_added: "「{word}」をNGワードにしてあげたよ♡ もう誰も登録できないんだから♡"
+  ng_word_already_exists: "「{word}」なんてとっくにNGだし♡ ザコは同じことばっかり言うよね♡"
+  ng_word_removed: "「{word}」をNGワードから外してあげたよ♡ また使えるようになったね♡"
+  ng_word_remove_failed: "「{word}」なんて最初からNGじゃないよ♡ キミの勘違いじゃない？♡"
+  ng_word_list_empty: "NGワードなんて一つも無いよ♡ 平和でいいじゃん♡"
+  ng_word_invalid: "それ、中身スカスカじゃん♡ ちゃんとした言葉を登録してよね♡"
 
 messaging:
   db_empty: "データベーススカスカじゃん♡ 早く言葉登録してよね♡"
   add_too_long: "なっが～♡ 100文字以内で我慢してよね♡"
   add_success: "「{phrase}」ね♡ 新しい言葉、アタシが覚えててあげる♡"
   add_already_exists: "「{phrase}」なんてもう知ってるし♡ ザコは同じことばっかり言うよね♡"
+  add_ng_word: "その言葉はNGワードを含んでるよ♡ そんな下品な言葉、アタシは覚えてあげないんだから♡"
 
 events:
   reply_to_batou: "ザコが反応した♡ かわいい♡\n{quoted_content}"

@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
+from libs import ng_word_handler
 from libs.categories import Category
 from libs.cog_utils import BaseCog, send_response
 from libs.message_handler import MessageHandler
@@ -28,6 +29,10 @@ class Messaging(BaseCog):
     async def _add_phrase_helper(self, interaction: discord.Interaction, phrase: str, category: Category):
         if len(phrase) > MAX_PHRASE_LENGTH:
             await send_response(interaction, MessageHandler.get('messaging.add_too_long'), ephemeral=True)
+            return
+
+        if ng_word_handler.find_ng_match(phrase) is not None:
+            await send_response(interaction, MessageHandler.get('messaging.add_ng_word'), ephemeral=True)
             return
 
         if await self.bot.phrase_repo.add(category, phrase):

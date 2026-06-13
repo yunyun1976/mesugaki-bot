@@ -2,7 +2,7 @@ import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from libs import master_handler, config_handler
+from libs import master_handler, config_handler, ng_word_handler
 from libs.constants import JST
 from libs.message_handler import MessageHandler
 from libs.repository import get_repository
@@ -102,6 +102,7 @@ if __name__ == "__main__":
     # フレーズDBの初期化はリポジトリのsetup()（setup_hook内）で行う。
     master_handler.init_masters_db()
     config_handler.init_config_db()
+    ng_word_handler.init_ng_words_db()
     if TOKEN is None:
         print("Error: DISCORD_TOKEN is not set in .env file.")
     else:
