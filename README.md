@@ -30,6 +30,7 @@
 
 - **罵倒**: キミにぴったりの言葉を投げかけてあげる♡
 - **わからせ**: わからせられるぉぉぉお♡♡♡
+- **データ保存先の切り替え**: ローカルでも外部APIでも、好きな方を選ばせてあげる♡
 - **マスターユーザー管理**: アタシを操れるのは選ばれた人だけ！
 - **おやすみタイマー**: 夜はアタシも寝るから、勝手に話しかけないでよね♡
 
@@ -80,6 +81,39 @@ DISCORD_TOKEN=your_token_here
 ```bash
 uv run src/main.py
 ```
+
+## 🗄️ データの保存先を選べるんだよ♡
+
+アタシが覚えた言葉、どこに置くか選ばせてあげる♡ 環境変数 `PHRASE_BACKEND` で切り替えてね♡
+
+| `PHRASE_BACKEND` | 保存先 | 説明 |
+| :--- | :--- | :--- |
+| `sqlite`（既定） | ローカルのSQLite | `data/` に保存。何も設定しなくてもコレだよ♡ |
+| `api` | 外部API | [dac-bot-integrated](https://github.com/kurosiko/dac-bot-integrated) に保存♡ |
+
+`api` を使うときは、こんな環境変数も教えてよね♡
+
+| 環境変数 | 必須 | 説明 |
+| :--- | :--- | :--- |
+| `API_BASE_URL` | ✅ | APIのベースURL（例: `https://your-worker.workers.dev`） |
+| `API_TYPE` | ー | 語彙のtype（既定: `mesugaki`） |
+| `API_TOKEN` | ー | 認証トークン（設定時のみ `Authorization: Bearer` で送信） |
+
+```powershell
+$env:PHRASE_BACKEND="api"
+$env:API_BASE_URL="https://your-worker.workers.dev"
+uv run src/main.py
+```
+
+起動するとアタシが今どっちを使ってるか教えてあげる♡ ちゃんと確認しなさいよね♡
+
+```text
+Phrase backend: SQLite (local)
+# または
+Phrase backend: API (https://your-worker.workers.dev, type=mesugaki)
+```
+
+> **ざぁこ向け注意♡**: 外部APIに切り替えても、その `type` の語彙が空っぽだとアタシは何も言えないからね♡ `/add_batou` とかで言葉を登録してからじゃないと、罵倒もわからせもスカスカだよ♡
 
 ## 📜 コマンド一覧♡
 
